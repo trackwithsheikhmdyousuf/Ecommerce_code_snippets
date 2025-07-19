@@ -1,0 +1,33 @@
+<script>
+// Get URL parameter by name
+function getParam(name) {
+const url = new URL(window.location.href);
+return url.searchParams.get(name);
+}
+
+// Set expiry for 90 days
+function getExpiryRecord(value) {
+const now = new Date();
+now.setDate(now.getDate() + 90); // 90-day expiry
+return {
+value: value,
+expiry: now.getTime(),
+};
+}
+
+// Main function to capture and store gclid
+function addGclid() {
+const gclidParam = getParam('gclid');
+const gclsrcParam = getParam('gclsrc');
+const isValidGclsrc = !gclsrcParam || gclsrcParam.indexOf('aw') !== -1;
+
+if (gclidParam && isValidGclsrc) {
+const gclidRecord = getExpiryRecord(gclidParam);
+localStorage.setItem('gclid', JSON.stringify(gclidRecord));
+}
+}
+
+addGclid();
+</script>
+
+
